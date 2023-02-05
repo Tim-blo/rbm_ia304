@@ -8,7 +8,7 @@ import pandas as pd
 
 
 def lire_mnist(caracteres=[]):
-    if not (all(x in range(0,10) for x in caracteres)):
+    if not (all(x in range(0, 10) for x in caracteres)):
         print("MNIST digits range from 0 to 9.\n")
         return None
     mnist = load_digits()
@@ -19,8 +19,8 @@ def lire_mnist(caracteres=[]):
     df = df.iloc[indices]
 
     # convert grayscale to binary
-    df[:]=np.where(df<8,0,1)
-    
+    df[:] = np.where(df < 8, 0, 1)
+
     return np.array(df), 8, 8
 
 
