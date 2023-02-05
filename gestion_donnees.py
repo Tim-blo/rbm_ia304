@@ -1,6 +1,7 @@
 import scipy.io
 import matplotlib.pyplot as plt
 import numpy as np
+import pickle
 
 
 def lire_alpha_digits(chemin, caracteres=[]):
@@ -15,3 +16,17 @@ def lire_alpha_digits(chemin, caracteres=[]):
 def afficher(image):
     plt.imshow(image)
     plt.show()
+
+
+def enregistrer_rbm(rbm, specs):
+    file_name = 'models/trained_rbm'
+    for key, value in specs.items():
+        file_name += '_' + key + '_' + str(value)
+    pickle.dump(rbm, open(file_name, "wb"))
+
+
+def charger_rbm(specs):
+    file_name = 'models/trained_rbm'
+    for key, value in specs.items():
+        file_name += '_' + key + '_' + str(value)
+    return pickle.load(open(file_name, "rb"))

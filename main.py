@@ -1,7 +1,7 @@
 from rbm import RBM
-from read_data import lire_alpha_digits
-from generate_data import generer_image_RBM
-from hyperparameters import *
+from gestion_donnees import lire_alpha_digits, enregistrer_rbm, charger_rbm
+from generation import generer_image_RBM
+from hyperparametres import *
 
 ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 GRILLE_CONVERSION = {str(i): i for i in range(10)}
@@ -15,7 +15,15 @@ def convertir_caracteres_en_indices(caracteres):
 
 if __name__ == '__main__':
     indices_entrainement = convertir_caracteres_en_indices(CARACTERES_ENTRAINEMENT)
-    donnees_entrainement, hauteur, largeur = lire_alpha_digits('data/binaryalphadigs.mat', caracteres=indices_entrainement)
-    machine = RBM(donnees_entrainement.shape[1], Q)
-    machine.train_RBM(donnees_entrainement, EPSILON, NB_EPOCHS, TAILLE_BATCH)
-    generer_image_RBM(machine, NB_DONNEES_GENEREES, NB_ITER_GIBBS, hauteur, largeur)
+    donnees_entrainement, hauteur, largeur = lire_alpha_digits(
+        'data/binaryalphadigs.mat',
+        caracteres=indices_entrainement
+    )
+    try:
+        machine = charger_rbm(specs=SPECS)
+    except:
+        machine = RBM(donnees_entrainement.shape[1], Q)
+        machine.train_RBM(donnees_entrainement, EPSILON, NB_EPOCHS, TAILLE_BATCH)
+        enregistrer_rbm(machine, specs=SPECS)
+    generer_image_RBM(machine, NB_DONNEES_GENEREES, NB_ITER_GIBBS,
+                      hauteur, largeur, commencer_par_h=COMMENCER_PAR_H_GIBBS)
