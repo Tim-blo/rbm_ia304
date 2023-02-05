@@ -3,6 +3,33 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pickle
 
+from sklearn.datasets import load_digits
+import pandas as pd
+
+
+def lire_mnist(caracteres=[]):
+    if not (all(x in range(0,10) for x in caracteres)):
+        print("MNIST digits range from 0 to 9.\n")
+        return None
+    mnist = load_digits()
+    df = pd.DataFrame(mnist.data)
+
+    # select data for target characters
+    indices = [idx for idx, target in enumerate(mnist.target) if target in caracteres]
+    df = df.iloc[indices]
+
+    # convert grayscale to binary
+    df[:]=np.where(df<8,0,1)
+    
+    return np.array(df), 8, 8
+
+
+def afficher_mnist(chiffre):
+    imgs, h, l = lire_mnist([chiffre])
+    for i in range(5):
+        v = imgs[i].reshape((h, l))
+        afficher(v)
+
 
 def lire_alpha_digits(chemin, caracteres=[]):
     full_data_json = scipy.io.loadmat(chemin)
