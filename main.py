@@ -20,10 +20,10 @@ if __name__ == '__main__':
         caracteres=indices_entrainement
     )
     try:
-        machine = charger_rbm(specs=SPECS)
+        machine = charger_rbm(specs=SPECS_ENTRAINEMENT)
     except:
         machine = RBM(donnees_entrainement.shape[1], Q)
         machine.train_RBM(donnees_entrainement, EPSILON, NB_EPOCHS, TAILLE_BATCH)
-        enregistrer_rbm(machine, specs=SPECS)
+        enregistrer_rbm(machine, specs=SPECS_ENTRAINEMENT)
     generer_image_RBM(machine, NB_DONNEES_GENEREES, NB_ITER_GIBBS,
                       hauteur, largeur, commencer_par_h=COMMENCER_PAR_H_GIBBS)
