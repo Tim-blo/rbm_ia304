@@ -8,7 +8,7 @@ def generer_image_RBM(RBM, nb_donnees, nb_iter_gibbs, hauteur, largeur, seed=0):
     q = len(RBM.b)
     images_generees = []
     for i in range(nb_donnees):
-        v = (rng.uniform(size=p) < 1 / 2)
+        v = (rng.uniform(size=p) < rng.uniform())
         for j in range(nb_iter_gibbs):
             h = (rng.uniform(size=q) < RBM.entree_sortie_RBM(v)) * 1
             v = (rng.uniform(size=p) < RBM.sortie_entree_RBM(h)) * 1
