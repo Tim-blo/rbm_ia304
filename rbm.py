@@ -1,4 +1,6 @@
 import numpy as np
+import matplotlib.pyplot as plt
+from hyperparametres import PREMIERE_EPOCH_PLOT
 
 
 class RBM:
@@ -16,6 +18,7 @@ class RBM:
 
     def train_RBM(self, X, epsilon, nb_epochs, taille_batch):
         n_echantillons = X.shape[0]
+        rec_errors = []
         for epoch in range(nb_epochs):
             self.rng.shuffle(X, axis=0)
             for batch in range(0, n_echantillons, taille_batch):
@@ -35,4 +38,11 @@ class RBM:
                 self.b += epsilon / taille_batch_actuel * grad_b
             H = self.entree_sortie_RBM(X)
             X_rec = self.sortie_entree_RBM(H)
-            print("Reconstruction error at epoch", epoch, "is", np.sum((X - X_rec) ** 2) / n_echantillons)
+            error = np.sum((X - X_rec) ** 2) / n_echantillons
+            rec_errors.append(error)
+            print("Reconstruction error at epoch", epoch, "is", error)
+        plt.plot(np.arange(PREMIERE_EPOCH_PLOT, nb_epochs), rec_errors[PREMIERE_EPOCH_PLOT:])
+        plt.title('Reconstruction error', fontsize=14)
+        plt.xlabel('Epoch', fontsize=10)
+        plt.ylabel('Reconstruction error', fontsize=10)
+        plt.show()
